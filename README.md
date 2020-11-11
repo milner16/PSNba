@@ -1,6 +1,12 @@
 # PSNba
 This module uses the data.nba endpoints to return information about players, teams, coaches, standings, etc.
 
+# Installation
+The module is deployed to the PowerShell gallery. You can install it on your PC by running:
+
+    Install-Module -Name 'PSNba'
+
+# About
 The benefit of a PowerShell module is that you can utilize the 'pipeline' to connect commands together. 
 
 For example, `Get-NbaCoach` requires the `TeamId` while `Get-NbaTeam` does not. So you can use the output from `Get-NbaTeam` to provide the `TeamId` to `Get-NbaCoach` using the pipeline:

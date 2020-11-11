@@ -28,7 +28,7 @@ Task Init {
     "`n"
 }
 
-<#Task Test -Depends Init {
+Task Test -Depends Init {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
@@ -50,7 +50,7 @@ Task Init {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
     }
     "`n"
-}#>
+}
 
 Task Build -Depends Test {
     $lines

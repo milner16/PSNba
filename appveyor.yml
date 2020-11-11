@@ -1,8 +1,6 @@
 environment:
   NuGetApiKey:
     secure: w/KzuOnUucxtyS4ReuYSF6ma2Mbo1dhF8dNqB64/LoPe1Qhjo3m0ZElIXPHAE4Y0
-  GitHubKey:
-    secure: Tp5Q74ItYzunstMygT/sxii6df2ZeN9wkO4Q65u5CPOYKbapY3lpZwFvw6YT8/WJ
     
 branches:
   only:

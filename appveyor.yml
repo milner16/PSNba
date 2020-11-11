@@ -1,0 +1,19 @@
+environment:
+  NuGetApiKey:
+    secure: w/KzuOnUucxtyS4ReuYSF6ma2Mbo1dhF8dNqB64/LoPe1Qhjo3m0ZElIXPHAE4Y0
+  GitHubKey:
+    secure: Tp5Q74ItYzunstMygT/sxii6df2ZeN9wkO4Q65u5CPOYKbapY3lpZwFvw6YT8/WJ
+    
+# Allow WMF5 (i.e. PowerShellGallery functionality)
+os: WMF 5
+
+# Skip on updates to the readme.
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
+skip_commits:
+  message: /updated readme.*|update readme.*s/
+
+build: false
+
+#Kick off the CI/CD pipeline
+test_script:
+  - ps: . .\build.ps1

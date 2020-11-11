@@ -4,6 +4,11 @@ environment:
   GitHubKey:
     secure: Tp5Q74ItYzunstMygT/sxii6df2ZeN9wkO4Q65u5CPOYKbapY3lpZwFvw6YT8/WJ
     
+ - provider: Environment
+  name: production
+  on:
+    branch: main
+    
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
 

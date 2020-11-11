@@ -60,8 +60,7 @@ Task Build -Depends Test {
 
     # Bump the module version
     try {
-        #$Version = Get-NextNugetPackageVersion -Name $env:BHProjectName -ErrorAction Stop
-        $Version = [System.Version]::new(1, 0, 0, 2)
+        $Version = Get-NextNugetPackageVersion -Name $env:BHProjectName -ErrorAction Stop
         Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Version -ErrorAction stop
     }
     catch {

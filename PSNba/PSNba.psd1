@@ -12,7 +12,7 @@
     RootModule        = 'PSNba.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.1'
+    ModuleVersion     = '1.0.1'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -23,9 +23,6 @@
 
     # Author of this module
     Author            = 'Alex Milner'
-
-    # Company or vendor of this module
-    CompanyName       = 'Unknown'
 
     # Copyright statement for this module
     Copyright         = '(c) Alex Milner. All rights reserved.'

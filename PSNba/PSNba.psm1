@@ -4,8 +4,3 @@ foreach($file in $cmdletFiles){
 }
 
 New-Variable -Name "Endpoints" -Value (Import-PowerShellDataFile -Path "$($PSScriptRoot)\Configuration\Endpoints.psd1")
-
-# Testing
-#testing 
-#testing
-#testing

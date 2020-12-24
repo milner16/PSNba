@@ -22,7 +22,7 @@ function Get-NbaStandings {
             [string] $dateStr = ConvertTo-DateString -Date $Date
         }
         else {
-            $dateStr = "Current"
+            $dateStr = "current"
         }
         [string] $endpoint = $Script:Endpoints.Standings.Replace("{date}", $dateStr)
         $endpoint = $endpoint.Replace("{type}", $Type.ToLower())

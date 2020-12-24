@@ -31,7 +31,7 @@ function Get-NbaTeamRoster {
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         $team = $response.league.standard
         $team | Add-Member -MemberType NoteProperty -Name "Season" -Value $Year
-        return $response.league.standard
+        return $team
     }
     
     end {

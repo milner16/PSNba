@@ -20,7 +20,7 @@ function Get-NbaTeam {
 
         # Year
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
@@ -32,7 +32,7 @@ function Get-NbaTeam {
         [Parameter(Mandatory = $false)]
         [ValidateSet("Nba", "AllStar", "International")]
         [string]
-        $Type
+        $Type="Nba"
     )
     
     begin {

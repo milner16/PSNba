@@ -15,7 +15,7 @@ function Get-NbaBoxScore {
             ValueFromPipelineByPropertyName = $true
         )]
         [Alias("homeStartDate")]
-        [DateTime]
+        [string]
         $Date
     )
     
@@ -24,9 +24,8 @@ function Get-NbaBoxScore {
     }
     
     process {
-        [string] $dateStr = ConvertTo-DateString -Date $Date
         [string] $endpoint = $Script:Endpoints.BoxScore.Replace("{gameId}", $GameId)
-        $endpoint = $endpoint.Replace("{date}", $dateStr) 
+        $endpoint = $endpoint.Replace("{date}", $Date) 
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         return $response.sports_content
     }

@@ -22,7 +22,7 @@ function Get-NbaPlayer {
     )
     
     begin {
-        [string] $endpoint = $Script:Endpoints.Players.Replace("{year}", $Year.ToString("0000"))
+        [string] $endpoint = $Script:Config.Endpoints.Players.Replace("{year}", $Year.ToString("0000"))
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         $players = $response.league.standard
     }

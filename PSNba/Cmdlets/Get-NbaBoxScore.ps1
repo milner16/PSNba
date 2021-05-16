@@ -24,7 +24,7 @@ function Get-NbaBoxScore {
     }
     
     process {
-        [string] $endpoint = $Script:Endpoints.BoxScore.Replace("{gameId}", $GameId)
+        [string] $endpoint = $Script:Config.Endpoints.BoxScore.Replace("{gameId}", $GameId)
         $endpoint = $endpoint.Replace("{date}", $Date) 
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         return $response.sports_content

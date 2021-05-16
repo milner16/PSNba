@@ -25,7 +25,7 @@ function Get-NbaCoach {
     }
     
     process {
-        [string] $endpoint = $Script:Endpoints.Coaches.Replace("{season}", $Season.ToString("0000"))
+        [string] $endpoint = $Script:Config.Endpoints.Coaches.Replace("{season}", $Season.ToString("0000"))
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         $response = $response.league.standard
         if ($TeamId) {

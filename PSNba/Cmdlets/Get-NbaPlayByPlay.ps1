@@ -25,7 +25,7 @@ function Get-NbaPlayByPlay {
     
     process {
         [string] $dateStr = ConvertTo-DateString -Date $Date
-        [string] $endpoint = $Script:Endpoints.PlayByPlay.Replace("{gameId}", $GameId)
+        [string] $endpoint = $Script:Config.Endpoints.PlayByPlay.Replace("{gameId}", $GameId)
         $endpoint = $endpoint.Replace("{date}", $dateStr) 
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         return $response

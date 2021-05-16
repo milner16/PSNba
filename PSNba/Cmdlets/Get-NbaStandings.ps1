@@ -36,30 +36,36 @@ function Get-NbaStandings {
                     foreach ($TeamEntry in $Response.league.standard.Teams) {
                         [NbaStandingEntry]::new($TeamEntry, $Type)
                     }
+                    break
                 }
                 "Conference" {
                     $ConferenceObjects = $Response.league.standard.conference
-                    $ConferenceNames = $ConferenceObjects.PSObject.Properties.Where({$_.MemberType -eq "NoteProperty"}).Name
-                        foreach ($Conference in $ConferenceNames) {
-                            foreach($TeamEntry in $ConferenceObjects.$($Conference)){
-                                [NbaStandingEntry]::new($TeamEntry, $Type)
-                            }
+                    $ConferenceNames = $ConferenceObjects.PSObject.Properties.Where( { $_.MemberType -eq "NoteProperty" }).Name
+                    foreach ($Conference in $ConferenceNames) {
+                        foreach ($TeamEntry in $ConferenceObjects.$($Conference)) {
+                            [NbaStandingEntry]::new($TeamEntry, $Type)
                         }
+                    }
+                    break
                 }
                 "Division" {
                     $ConferenceObjects = $Response.league.standard.conference
-                    $ConferenceNames = $ConferenceObjects.PSObject.Properties.Where({$_.MemberType -eq "NoteProperty"}).Name
-                        foreach ($Conference in $ConferenceNames) {
-                            $DivisionObjects = $ConferenceObjects.$($Conference)
-                            $DivisionNames = $DivisionObjects.PSObject.Properties.Where({$_.MemberType -eq "NoteProperty"}).Name
-                            foreach($Division in $DivisionNames){
-                                foreach($TeamEntry in $DivisionObjects.$($Division)){
-                                    [NbaStandingEntry]::new($TeamEntry, $Type)
-                                }
+                    $ConferenceNames = $ConferenceObjects.PSObject.Properties.Where( { $_.MemberType -eq "NoteProperty" }).Name
+                    foreach ($Conference in $ConferenceNames) {
+                        $DivisionObjects = $ConferenceObjects.$($Conference)
+                        $DivisionNames = $DivisionObjects.PSObject.Properties.Where( { $_.MemberType -eq "NoteProperty" }).Name
+                        foreach ($Division in $DivisionNames) {
+                            foreach ($TeamEntry in $DivisionObjects.$($Division)) {
+                                [NbaStandingEntry]::new($TeamEntry, $Type)
                             }
                         }
+                    }
+                    break
                 }
-                Default {}
+                Default {
+                    $Response
+                    break
+                }
             }
         }
     }

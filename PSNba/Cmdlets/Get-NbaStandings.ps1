@@ -34,7 +34,7 @@ function Get-NbaStandings {
             switch ($Type) {
                 "All" {  
                     foreach ($TeamEntry in $Response.league.standard.Teams) {
-                        [StandingEntry]::new($TeamEntry, $Type)
+                        [NbaStandingEntry]::new($TeamEntry, $Type)
                     }
                 }
                 "Conference" {

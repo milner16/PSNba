@@ -39,7 +39,7 @@ function Get-NbaTeam {
         if (!$Year) {
             $Year = (Get-Date).Year
         }
-        [string] $endpoint = $Script:Endpoints.Teams.Replace("{year}", $Year.ToString("0000"))
+        [string] $endpoint = $Script:Config.Endpoints.Teams.Replace("{year}", $Year.ToString("0000"))
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         $teams = $response.league.standard
     }

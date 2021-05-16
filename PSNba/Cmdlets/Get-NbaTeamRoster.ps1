@@ -26,7 +26,7 @@ function Get-NbaTeamRoster {
     }
     
     process {
-        [string] $endpoint = $Script:Endpoints.TeamRoster.Replace("{year}", $Year.ToString("0000"))
+        [string] $endpoint = $Script:Config.Endpoints.TeamRoster.Replace("{year}", $Year.ToString("0000"))
         $endpoint = $endpoint.Replace("{teamName}", $TeamName)
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         $team = $response.league.standard

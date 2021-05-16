@@ -16,7 +16,7 @@ function Get-NbaTeamStatRanking {
     }
     
     process {
-        [string] $endpoint = $Script:Endpoints.TeamStatsRankings.Replace("{season}", $Season.ToString("0000")) 
+        [string] $endpoint = $Script:Config.Endpoints.TeamStatsRankings.Replace("{season}", $Season.ToString("0000")) 
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         return $response.league.standard
     }

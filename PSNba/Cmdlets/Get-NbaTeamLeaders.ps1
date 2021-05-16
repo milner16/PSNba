@@ -18,7 +18,7 @@ function Get-NbaTeamLeaders {
     }
     
     process {
-        [string] $endpoint = $Script:Endpoints.TeamLeaders.Replace("{season}", $Season.ToString("0000"))
+        [string] $endpoint = $Script:Config.Endpoints.TeamLeaders.Replace("{season}", $Season.ToString("0000"))
         $endpoint = $endpoint.Replace("{teamId}", $TeamId) 
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         return $response.league.standard

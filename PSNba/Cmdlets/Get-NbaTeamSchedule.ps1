@@ -23,7 +23,7 @@ function Get-NbaTeamSchedule {
     }
     
     process {
-        [string] $endpoint = $Script:Endpoints.TeamSchedule.Replace("{season}", $Season.ToString("0000"))
+        [string] $endpoint = $Script:Config.Endpoints.TeamSchedule.Replace("{season}", $Season.ToString("0000"))
         $endpoint = $endpoint.Replace("{teamId}", $TeamId) 
         $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
         return $response.league.standard

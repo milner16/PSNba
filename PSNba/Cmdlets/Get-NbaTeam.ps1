@@ -32,7 +32,7 @@ function Get-NbaTeam {
         [Parameter(Mandatory = $false)]
         [ValidateSet("Nba", "AllStar", "International")]
         [string]
-        $Type="Nba"
+        $Type = "Nba"
     )
     
     begin {
@@ -60,9 +60,8 @@ function Get-NbaTeam {
         }
 
         foreach ($team in $teams) {
-            $team | Add-Member -MemberType NoteProperty -Name "Season" -Value $Year
+            [NbaTeam]::new($team, $Year)
         }
-        return $teams
     }
     
     end {

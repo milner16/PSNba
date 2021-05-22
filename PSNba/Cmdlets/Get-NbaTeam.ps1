@@ -13,10 +13,19 @@ function Get-NbaTeam {
         # Team Name
         [Parameter(
             Mandatory = $true,
-            ParameterSetName = "Name"
+            ParameterSetName = "TeamName"
         )]
         [string]
         $Name,
+
+        # Type
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = "Type"
+        )]
+        [ValidateSet("Nba", "AllStar", "International")]
+        [string]
+        $Type,
 
         # Year
         [Parameter(
@@ -26,41 +35,36 @@ function Get-NbaTeam {
         [ValidateRange(0, 9999)]
         [Alias("Season")]
         [int]
-        $Year,
-
-        # Type
-        [Parameter(Mandatory = $false)]
-        [ValidateSet("Nba", "AllStar", "International")]
-        [string]
-        $Type = "Nba"
+        $Year
     )
     
     begin {
-        if (!$Year) {
-            $Year = (Get-Date).Year
+        if (-Not($Year)) {
+            $Year = $Script:Config.Season.Year
         }
         [string] $endpoint = $Script:Config.Endpoints.Teams.Replace("{year}", $Year.ToString("0000"))
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        $teams = $response.league.standard
+        $Response = Invoke-NbaRequest -Uri $endpoint -Method:Get
+        $TeamList = $response.league.standard
     }
     
     process {
-        if ($Name) {
-            $teams = $teams.Where( { $_.FullName -eq $Name })
+        if ($PSCmdlet.ParameterSetName -eq 'TeamId') {
+            $Teams = $TeamList.Where( { $_.teamId -eq $TeamId })
         }
-        elseif ($TeamId) {
-            $teams = $teams.Where( { $_.teamId -eq $TeamId })
+        elseif ($PSCmdlet.ParameterSetName -eq 'TeamName') {
+            $Teams = $TeamList.Where( { $_.fullName -like $Name })
+        }
+        elseif ($PSCmdlet.ParameterSetName -eq 'Type') {
+            switch ($Type) {
+                "Nba" { $Teams = $TeamList.Where( { $_.isNbaFranchise }); break; }
+                "AllStar" { $Teams = $TeamList.Where( { $_.isAllStar }); break; }
+                "International" { $Teams = $TeamList.Where( { $_.confName -eq "Intl" }); break; }
+                Default { break; }
+            }
         }
 
-        switch ($Type) {
-            "Nba" { $teams = $teams.Where( { $_.isNbaFranchise }); break; }
-            "AllStar" { $teams = $teams.Where( { $_.isAllStar }); break; }
-            "International" { $teams = $teams.Where( { $_.confName -eq "Intl" }); break; }
-            Default {}
-        }
-
-        foreach ($team in $teams) {
-            [NbaTeam]::new($team, $Year)
+        foreach ($Team in $Teams) {
+            [NbaTeam]::new($Team, $Year)
         }
     }
     

@@ -14,8 +14,8 @@ function Get-NbaBoxScore {
             Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true
         )]
-        [Alias("homeStartDate", "startDateEastern")]
-        [string]
+        [Alias("DateTime")]
+        [DateTime]
         $Date,
 
         # Type
@@ -37,7 +37,8 @@ function Get-NbaBoxScore {
     process {
         Write-Verbose -Message "Type = $($Type)"
         [string] $Endpoint = $Script:Config.Endpoints.BoxScore.Replace("{gameId}", $GameId)
-        $Endpoint = $Endpoint.Replace("{date}", $Date) 
+        $DateString = ConvertTo-DateString -Date $Date
+        $Endpoint = $Endpoint.Replace("{date}", $DateString) 
         $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
 
         if ($Raw) {

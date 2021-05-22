@@ -6,27 +6,43 @@ function Get-NbaTeamSchedule {
             Mandatory = $true,
             ValueFromPipelineByPropertyName = $true
         )]
+        [Alias("Id")]
         [string]
         $TeamId,
 
         # Season
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
         [int]
-        $Season
+        $Season,
+
+        # Return Raw JSON 
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $Raw
     )
     
     begin {
     }
     
     process {
-        [string] $endpoint = $Script:Config.Endpoints.TeamSchedule.Replace("{season}", $Season.ToString("0000"))
-        $endpoint = $endpoint.Replace("{teamId}", $TeamId) 
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        return $response.league.standard
+        if (-Not($Season)) {
+            $Season = $Script:Config.Season.Year
+        }
+        [string] $Endpoint = $Script:Config.Endpoints.TeamSchedule.Replace("{season}", $Season.ToString("0000"))
+        $Endpoint = $Endpoint.Replace("{teamId}", $TeamId) 
+        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+        if ($Raw) {
+            return $Response
+        }
+        else {
+            foreach ($Item in $Response.league.standard) {
+                [NbaScheduleItem]::new($Item)
+            }
+        }
     }
     
     end {

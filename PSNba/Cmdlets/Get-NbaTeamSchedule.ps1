@@ -19,6 +19,11 @@ function Get-NbaTeamSchedule {
         [int]
         $Season,
 
+        # Date
+        [Parameter(Mandatory = $false)]
+        [DateTime]
+        $Date,
+
         # Return Raw JSON 
         [Parameter(Mandatory = $false)]
         [switch]
@@ -39,8 +44,18 @@ function Get-NbaTeamSchedule {
             return $Response
         }
         else {
+            $Items = @()
             foreach ($Item in $Response.league.standard) {
-                [NbaScheduleItem]::new($Item)
+                $Items += [NbaScheduleItem]::new($Item)
+            }
+            
+            $BeginningOfDay = Get-Date -Date $Date -Hour 0 -Minute 0 -Second 0 -Millisecond 0
+            $EndOfDay = Get-Date -Date $Date -Hour 23 -Minute 59
+            if ($Date) {
+                $Items.Where( { $_.DateTime -gt $BeginningOfDay -and $_.DateTime -lt $EndOfDay })
+            }
+            else {
+                $Items
             }
         }
     }

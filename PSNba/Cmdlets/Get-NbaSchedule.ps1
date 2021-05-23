@@ -13,7 +13,12 @@ function Get-NbaSchedule {
         # Date
         [Parameter(Mandatory = $false)]
         [DateTime]
-        $Date
+        $Date,
+
+        # Return raw json output
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $Raw
     )
     
     begin {
@@ -23,6 +28,11 @@ function Get-NbaSchedule {
     process {
         [string] $Endpoint = $Script:Config.Endpoints.Schedule.Replace("{season}", $Season.ToString("0000"))
         $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+
+        if ($Raw) {
+            return $Response
+        }
+
         $Items = @()
         foreach ($Item in $Response.league.standard) {
             $Items += [NbaScheduleItem]::new($Item)
@@ -31,11 +41,10 @@ function Get-NbaSchedule {
         $BeginningOfDay = Get-Date -Date $Date -Hour 0 -Minute 0 -Second 0 -Millisecond 0
         $EndOfDay = Get-Date -Date $Date -Hour 23 -Minute 59
         if ($Date) {
-            $Items.Where( { $_.DateTime -gt $BeginningOfDay -and $_.DateTime -lt $EndOfDay })
+            $Items = $Items.Where( { $_.DateTime -gt $BeginningOfDay -and $_.DateTime -lt $EndOfDay })
         }
-        else {
-            $Items
-        }
+        
+        return $Items
     }
     
     end {

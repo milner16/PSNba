@@ -16,9 +16,11 @@ function Get-NbaSchedule {
     }
     
     process {
-        [string] $endpoint = $Script:Config.Endpoints.Schedule.Replace("{season}", $Season.ToString("0000"))
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        return $response.league.standard
+        [string] $Endpoint = $Script:Config.Endpoints.Schedule.Replace("{season}", $Season.ToString("0000"))
+        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+        foreach ($Item in $Response.league.standard) {
+            [NbaScheduleItem]::new($Item)
+        }
     }
     
     end {

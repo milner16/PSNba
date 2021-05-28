@@ -3,7 +3,7 @@ function Get-NbaSchedule {
     param (
         # Season
         [Parameter(
-            Mandatory = $true,
+            Mandatory = $false,
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
@@ -26,6 +26,9 @@ function Get-NbaSchedule {
     }
     
     process {
+        if (-Not($Season)) {
+            $Season = $Script:Defaults.Season
+        }
         [string] $Endpoint = $Script:Config.Endpoints.Schedule.Replace("{season}", $Season.ToString("0000"))
         $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
 
@@ -38,9 +41,9 @@ function Get-NbaSchedule {
             $Items += [NbaScheduleItem]::new($Item)
         }
 
-        $BeginningOfDay = Get-Date -Date $Date -Hour 0 -Minute 0 -Second 0 -Millisecond 0
-        $EndOfDay = Get-Date -Date $Date -Hour 23 -Minute 59
         if ($Date) {
+            $BeginningOfDay = Get-Date -Date $Date -Hour 0 -Minute 0 -Second 0 -Millisecond 0
+            $EndOfDay = Get-Date -Date $Date -Hour 23 -Minute 59
             $Items = $Items.Where( { $_.DateTime -gt $BeginningOfDay -and $_.DateTime -lt $EndOfDay })
         }
         

@@ -3,10 +3,10 @@ function Get-NbaPlayer {
     param (
         # Year
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
-        [Alias("Season")]
+        [Alias('Season')]
         [ValidateRange(0, 9999)]
         [int]
         $Year,
@@ -22,16 +22,19 @@ function Get-NbaPlayer {
     )
     
     begin {
-        [string] $endpoint = $Script:Config.Endpoints.Players.Replace("{year}", $Year.ToString("0000"))
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        $players = $response.league.standard
+        if(-Not($Year)){
+            $Year = $Script:Defaults.Season
+        }
+        [string] $Endpoint = $Script:Config.Endpoints.Players.Replace("{year}", $Year.ToString("0000"))
+        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+        $Players = $Response.league.standard
     }
     
     process {
         if ($PlayerId) {
-            return $players.Where( { $_.personId -eq $PlayerId })
+            return $Players.Where( { $_.personId -eq $PlayerId })
         }
-        return $players
+        return $Players
     }
     
     end {

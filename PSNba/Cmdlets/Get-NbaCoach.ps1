@@ -6,16 +6,17 @@ function Get-NbaCoach {
             Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
+        [Alias('Id')]
         [string]
         $TeamId,
         
         # Season
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
-        [Alias("Year")]
+        [Alias('Year')]
         [int]
         $Season
     )
@@ -25,14 +26,19 @@ function Get-NbaCoach {
     }
     
     process {
-        [string] $endpoint = $Script:Config.Endpoints.Coaches.Replace("{season}", $Season.ToString("0000"))
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        $response = $response.league.standard
+        if (-Not($Season)) {
+            $Season = $Script:Defaults.Season
+        }
+
+        [string] $Endpoint = $Script:Config.Endpoints.Coaches.Replace("{season}", $Season.ToString("0000"))
+        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+        $Response = $Response.league.standard
+        
         if ($TeamId) {
-            return $response.Where( { $_.TeamId -eq $TeamId })
+            return $Response.Where( { $_.TeamId -eq $TeamId })
         }
         else {
-            return $response
+            return $Response
         }
     }
     

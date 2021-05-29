@@ -18,7 +18,7 @@ function Invoke-NbaRequest {
     }
     
     process {
-        if (![uri]::TryCreate($Uri, [System.UriKind]::Absolute, [ref] $Uri)) {
+        if (-Not([uri]::TryCreate($Uri, [System.UriKind]::Absolute, [ref] $Uri))) {
             Write-Error -Message "Invalid URI: [$($Uri)]" -ErrorAction:Stop
         }
 

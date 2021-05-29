@@ -1,10 +1,11 @@
 function Get-NbaCoach {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Class')]
     param (
         # Team Name
         [Parameter(
             Mandatory = $false, 
-            ValueFromPipelineByPropertyName = $true
+            ValueFromPipelineByPropertyName = $true,
+            ParameterSetName = 'Class'
         )]
         [Alias('Id')]
         [string]
@@ -18,7 +19,15 @@ function Get-NbaCoach {
         [ValidateRange(0, 9999)]
         [Alias('Year')]
         [int]
-        $Season
+        $Season,
+
+        # Return the raw JSON response
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'Raw'
+        )]
+        [switch]
+        $Raw
     )
     
     begin {
@@ -32,6 +41,11 @@ function Get-NbaCoach {
 
         [string] $Endpoint = $Script:Config.Endpoints.Coaches.Replace("{season}", $Season.ToString("0000"))
         $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+
+        if ($Raw) {
+            return $Response
+        }
+
         $Coaches = $Response.league.standard
 
         if ($TeamId) {

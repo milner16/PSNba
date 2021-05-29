@@ -7,6 +7,7 @@ function Get-NbaTeamStatRanking {
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
+        [Alias('Year')]
         [int]
         $Season
     )
@@ -16,9 +17,9 @@ function Get-NbaTeamStatRanking {
     }
     
     process {
-        [string] $endpoint = $Script:Config.Endpoints.TeamStatsRankings.Replace("{season}", $Season.ToString("0000")) 
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        return $response.league.standard
+        [string] $Endpoint = $Script:Config.Endpoints.TeamStatsRankings.Replace("{season}", $Season.ToString("0000")) 
+        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+        return $Response.league.standard
     }
     
     end {

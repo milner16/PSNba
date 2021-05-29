@@ -5,7 +5,7 @@ function Get-NbaPlayByPlay {
         [Parameter(
             Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true
-            )]
+        )]
         [string]
         $GameId,
 
@@ -13,10 +13,18 @@ function Get-NbaPlayByPlay {
         [Parameter(
             Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true
-            )]
-        [Alias("homeStartDate")]
+        )]
+        [Alias("DateTime")]
         [datetime]
-        $Date 
+        $Date,
+
+        # Return raw json
+        [Parameter(
+            Mandatory = $false,
+            ParameterSetName = 'Raw'
+        )]
+        [switch]
+        $Raw
     )
     
     begin {
@@ -24,11 +32,19 @@ function Get-NbaPlayByPlay {
     }
     
     process {
-        [string] $dateStr = ConvertTo-DateString -Date $Date
-        [string] $endpoint = $Script:Config.Endpoints.PlayByPlay.Replace("{gameId}", $GameId)
-        $endpoint = $endpoint.Replace("{date}", $dateStr) 
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        return $response
+        [string] $DateStr = ConvertTo-DateString -Date $Date
+        [string] $Endpoint = $Script:Config.Endpoints.PlayByPlay.Replace("{gameId}", $GameId)
+        $Endpoint = $endpoint.Replace("{date}", $DateStr) 
+        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+
+        if ($Raw) {
+            return $Response
+        }
+
+        $Plays = $Response.sports_content.game.play
+        foreach ($Play in $Plays) {
+            [NbaPlaybyPlayEvent]::new($Play)
+        }
     }
     
     end {

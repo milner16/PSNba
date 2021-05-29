@@ -3,7 +3,7 @@ function Get-NbaPlayoffBracket {
     param (
         # Season
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
@@ -16,9 +16,12 @@ function Get-NbaPlayoffBracket {
     }
     
     process {
-        [string] $endpoint = $Script:Config.Endpoints.PlayoffBracket.Replace("{season}", $Season.ToString("0000"))
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        return $response.series
+        if (-Not($Season)) {
+            $Season = $Script:Defaults.Season
+        }
+        [string] $Endpoint = $Script:Config.Endpoints.PlayoffBracket.Replace("{season}", $Season.ToString("0000"))
+        $Response = Invoke-NbaRequest -Uri $endpoint -Method:Get
+        return $Response.series
     }
     
     end {

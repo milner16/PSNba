@@ -3,13 +3,13 @@ function Get-NbaTeamRoster {
     param (
         # Year
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
-        [Alias("Season")]
+        [Alias('Year')]
         [ValidateRange(0, 9999)]
         [int]
-        $Year,
+        $Season,
 
         # Team ID
         [Parameter(
@@ -26,12 +26,15 @@ function Get-NbaTeamRoster {
     }
     
     process {
-        [string] $endpoint = $Script:Config.Endpoints.TeamRoster.Replace("{year}", $Year.ToString("0000"))
-        $endpoint = $endpoint.Replace("{teamName}", $TeamName)
-        $response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        $team = $response.league.standard
-        $team | Add-Member -MemberType NoteProperty -Name "Season" -Value $Year
-        return $team
+        if (-Not($Season)) {
+            $Season = $Script:Defaults.Season
+        }
+        [string] $Endpoint = $Script:Config.Endpoints.TeamRoster.Replace("{season}", $Season.ToString("0000"))
+        $Endpoint = $endpoint.Replace("{teamName}", $TeamName)
+        $Response = Invoke-NbaRequest -Uri $endpoint -Method:Get
+        $Team = $response.league.standard
+        $Team | Add-Member -MemberType NoteProperty -Name "Season" -Value $Season
+        return $Team
     }
     
     end {

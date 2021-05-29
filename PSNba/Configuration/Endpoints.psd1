@@ -16,5 +16,5 @@
     Teams             = "http://data.nba.net/data/10s/prod/v1/{year}/teams.json"
     TeamSchedule      = "http://data.nba.com/data/10s/prod/v1/{season}/teams/{teamId}/schedule.json"
     TeamStatsRankings = "http://data.nba.com/data/10s/prod/v1/{season}/team_stats_rankings.json"
-    TeamRoster        = "http://data.nba.net/data/10s/prod/v1/{year}/teams/{teamName}/roster.json"
+    TeamRoster        = "http://data.nba.net/data/10s/prod/v1/{season}/teams/{teamName}/roster.json"
 }

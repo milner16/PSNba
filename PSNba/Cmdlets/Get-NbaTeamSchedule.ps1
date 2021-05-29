@@ -16,6 +16,7 @@ function Get-NbaTeamSchedule {
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateRange(0, 9999)]
+        [Alias('Year')]
         [int]
         $Season,
 

@@ -32,13 +32,14 @@ function Get-NbaCoach {
 
         [string] $Endpoint = $Script:Config.Endpoints.Coaches.Replace("{season}", $Season.ToString("0000"))
         $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
-        $Response = $Response.league.standard
-        
+        $Coaches = $Response.league.standard
+
         if ($TeamId) {
-            return $Response.Where( { $_.TeamId -eq $TeamId })
+            $Coaches = $Coaches.Where( { $_.TeamId -eq $TeamId })
         }
-        else {
-            return $Response
+
+        foreach ($Coach in $Coaches) {
+            [NbaCoach]::new($Coach)
         }
     }
     

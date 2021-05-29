@@ -24,3 +24,5 @@ if ($Today.Month -lt 9) {
 }
 
 $Script:Defaults.Add('Season', $CurrentSeason)
+
+New-Variable -Name "Players" -Value @{} -Scope:Script

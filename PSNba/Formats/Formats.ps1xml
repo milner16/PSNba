@@ -263,5 +263,55 @@
                 </TableRowEntries>
             </TableControl>
         </View>
+        <View>
+            <Name>NbaPlayByPlayEvent</Name>
+            <ViewSelectedBy>
+                <TypeName>NbaPlayByPlayEvent</TypeName>
+            </ViewSelectedBy>
+            <GroupBy>
+                <PropertyName>Period</PropertyName>
+            </GroupBy>
+            <TableControl>
+                <TableHeaders>
+                    <TableColumnHeader>
+                        <Label>Team</Label>
+                        <Width>6</Width>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Alignment>Center</Alignment>
+                        <Label>Player</Label>
+                        <Width>20</Width>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Alignment>Center</Alignment>
+                        <Label>Description</Label>
+                        <Width>80</Width>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Alignment>Center</Alignment>
+                        <Label>Score</Label>
+                        <Width>9</Width>
+                    </TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>TeamAbbreviation</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>PersonId</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Description</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock> "$($_.HomeScore)-$($_.VisitorScore)"</ScriptBlock>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
     </ViewDefinitions>
 </Configuration>

@@ -1,7 +1,11 @@
-$cmdletFiles = Get-ChildItem -Path "$($PSScriptRoot)\*.ps1" -Recurse
-foreach ($file in $cmdletFiles) {
-    . $file.FullName
+$PublicFiles = Get-ChildItem -Path "$($PSScriptRoot)\Cmdlets\Public\*.ps1" -Recurse
+$PrivateFiles = Get-ChildItem -Path "$($PSScriptRoot)\Cmdlets\Private\*.ps1" -Recurse 
+$ClassFiles = Get-ChildItem -Path "$($PSScriptRoot)\Classes\*.ps1" -Recurse 
+foreach ($File in $PublicFiles + $PrivateFiles + $ClassFiles) {
+    . $File.FullName
 }
+
+Export-ModuleMember -Function $($PublicFiles.BaseName)
 
 New-Variable -Name "Config" -Value @{} -Scope:Script 
 

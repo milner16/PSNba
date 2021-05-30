@@ -278,17 +278,17 @@
                         <Width>6</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
-                        <Alignment>Center</Alignment>
+                        <Alignment>Left</Alignment>
                         <Label>Player</Label>
                         <Width>20</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
-                        <Alignment>Center</Alignment>
+                        <Alignment>Left</Alignment>
                         <Label>Description</Label>
                         <Width>80</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
-                        <Alignment>Center</Alignment>
+                        <Alignment>Left</Alignment>
                         <Label>Score</Label>
                         <Width>9</Width>
                     </TableColumnHeader>

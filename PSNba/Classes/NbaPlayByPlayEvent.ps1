@@ -8,8 +8,9 @@ class NbaPlaybyPlayEvent {
     [int] $VisitorScore
     [string] $TeamAbbreviation
     [int] $Period
+    [string] $PlayerInfo
 
-    NbaPlaybyPlayEvent($JsonResponse) {
+    NbaPlaybyPlayEvent($JsonResponse, $PlayerInfo) {
         $this.EventId = $JsonResponse.event  
         $this.Clock = $JsonResponse.clock 
         $this.Description = $JsonResponse.description
@@ -19,5 +20,6 @@ class NbaPlaybyPlayEvent {
         $this.VisitorScore = $JsonResponse.visitor_score 
         $this.TeamAbbreviation = $JsonResponse.team_abr 
         $this.Period = $JsonResponse.period 
+        $this.PlayerInfo = $PlayerInfo
     }
 }

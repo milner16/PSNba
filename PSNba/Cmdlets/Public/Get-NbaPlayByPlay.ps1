@@ -32,6 +32,9 @@ function Get-NbaPlayByPlay {
     }
     
     process {
+        $PlayerInfo = ""
+        $Player = $null
+        $Plays = $null
         [string] $DateStr = ConvertTo-DateString -Date $Date
         [string] $Endpoint = $Script:Config.Endpoints.PlayByPlay.Replace("{gameId}", $GameId)
         $Endpoint = $endpoint.Replace("{date}", $DateStr) 
@@ -43,7 +46,17 @@ function Get-NbaPlayByPlay {
 
         $Plays = $Response.sports_content.game.play
         foreach ($Play in $Plays) {
-            [NbaPlaybyPlayEvent]::new($Play)
+            if ($Play.person_id) {
+                $Player = Get-NbaPlayer -PlayerId $Play.person_Id
+            }
+           
+            if ($Player) {
+                $PlayerInfo = $Player.GetInfo()
+            }
+            else {
+                $PlayerInfo = "N/A"
+            }
+            [NbaPlaybyPlayEvent]::new($Play, $PlayerInfo)
         }
     }
     

@@ -1,5 +1,5 @@
 function Get-NbaPlayer {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
     param (
         # Year
         [Parameter(
@@ -13,28 +13,43 @@ function Get-NbaPlayer {
 
         # Player ID
         [Parameter(
+            ParameterSetName = 'Default',
             Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true
         )]
         [Alias("personId")]
         [string]
-        $PlayerId
+        $PlayerId,
+
+        # Pulls down player list instead of using cached version
+        [Parameter(
+            Mandatory = $false
+        )]
+        [switch]
+        $Force
     )
     
     begin {
-        if(-Not($Year)){
+        if (-Not($Year)) {
             $Year = $Script:Defaults.Season
         }
-        [string] $Endpoint = $Script:Config.Endpoints.Players.Replace("{year}", $Year.ToString("0000"))
-        $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
-        $Players = $Response.league.standard
+        if ($Force) {
+            [string] $Endpoint = $Script:Config.Endpoints.Players.Replace("{year}", $Year.ToString("0000"))
+            $Response = Invoke-NbaRequest -Uri $Endpoint -Method:Get
+            $Script:Players = @()
+            foreach ($Player in $Response.league.standard) {
+                $Script:Players += [NbaPlayer]::new($Player)
+            }
+        }
     }
     
     process {
         if ($PlayerId) {
-            return $Players.Where( { $_.personId -eq $PlayerId })
+            return $Script:Players.Where( { $_.personId -eq $PlayerId })
         }
-        return $Players
+        else {
+            return $Script:Players
+        }
     }
     
     end {

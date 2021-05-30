@@ -300,7 +300,7 @@
                                 <PropertyName>TeamAbbreviation</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>PersonId</PropertyName>
+                                <PropertyName>PlayerInfo</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Description</PropertyName>

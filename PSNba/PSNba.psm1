@@ -7,7 +7,7 @@ foreach ($File in $PublicFiles + $PrivateFiles + $ClassFiles) {
 
 Export-ModuleMember -Function $($PublicFiles.BaseName)
 
-New-Variable -Name "Config" -Value @{} -Scope:Script 
+New-Variable -Name "Config" -Value @{} -Scope:Script -Force
 
 $ConfigurationFiles = Get-ChildItem -Path "$($PSScriptRoot)\Configuration\*.psd1" -Recurse
 foreach ($File in $ConfigurationFiles) {
@@ -15,7 +15,7 @@ foreach ($File in $ConfigurationFiles) {
     $Script:Config.Add($File.BaseName, $Data)
 }
 
-New-Variable -Name 'Defaults' -Value @{} -Scope:Script
+New-Variable -Name 'Defaults' -Value @{} -Scope:Script -Force 
 
 $Today = (Get-Date)
 $CurrentSeason = $Today.Year
@@ -25,4 +25,4 @@ if ($Today.Month -lt 9) {
 
 $Script:Defaults.Add('Season', $CurrentSeason)
 
-New-Variable -Name "Players" -Value @{} -Scope:Script
+New-Variable -Name "Players" -Value (Get-NbaPlayer -Force) -Scope:Script -Force 

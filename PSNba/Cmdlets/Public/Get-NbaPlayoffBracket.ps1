@@ -21,7 +21,7 @@ function Get-NbaPlayoffBracket {
         }
         [string] $Endpoint = $Script:Config.Endpoints.PlayoffBracket.Replace("{season}", $Season.ToString("0000"))
         $Response = Invoke-NbaRequest -Uri $endpoint -Method:Get
-        return $Response.series
+        return $Response
     }
     
     end {

@@ -26,7 +26,7 @@ function Invoke-NbaRequest {
             Invoke-RestMethod -Uri $Uri -Method:$($Method) 
         }
         catch {
-            Write-Error $_ -ErrorAction:Continue
+            Write-Error $_ 
         }
     }
     
